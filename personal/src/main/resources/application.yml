@@ -18,3 +18,8 @@ spring:
 logging:
   level:
     org.springframework: INFO
+
+openai:
+  api:
+    key: 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
+
