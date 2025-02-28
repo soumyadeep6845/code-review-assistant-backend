@@ -34,7 +34,7 @@ public class AiCodeReviewService {
     }
 
     public String analyzeCode(String code, String language) {
-        // Create a proper JSON request body
+        // Creating a JSON request body
         Map<String, Object> requestBody = Map.of(
                 "model", "gpt-4o-mini",
                 "messages", new Object[]{
