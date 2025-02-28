@@ -51,6 +51,25 @@ The backend should now be running on `http://localhost:8080`.
 ✅ MySQL database integration\
 ✅ Scalable with Docker & Kubernetes
 
+## 📂 Folder Structure
+```
+code-review-assistant-backend/
+│-- src/
+│   ├── main/
+│   │   ├── java/com/example/personal/
+│   │   │   ├── config/         # Configurations
+│   │   │   ├── controllers/    # API Controllers
+│   │   │   ├── models/         # Data Models
+│   │   │   ├── repositories/   # Database Repositories
+│   │   │   ├── services/       # Business Logic Services
+│   │   ├── resources/
+│   │       ├── application.properties  # Application Configuration
+│   ├── test/         # Unit & Integration Tests
+│-- build.gradle      # Gradle Build Configuration
+│-- Dockerfile        # Docker Configuration
+│-- deployment.yaml   # Kubernetes Configuration
+```
+
 ## 📜 API Endpoints
 | Method | Endpoint               | Description                  |
 |--------|------------------------|------------------------------|
