@@ -39,7 +39,7 @@ public class AiCodeReviewService {
                 "model", "gpt-4o-mini",
                 "messages", new Object[]{
                         Map.of("role", "system", "content", "You are an expert code reviewer. Provide a detailed review."),
-                        Map.of("role", "user", "content", "Analyze the following " + language + " code and suggest improvements:\n\n" + code)
+                        Map.of("role", "user", "content", "Analyze the following " + language + " code and suggest improvements. Only provide the necessary improvements in short, don't explain anything. Answer directly on point:\n\n" + code)
                 },
                 "max_tokens", 500
         );

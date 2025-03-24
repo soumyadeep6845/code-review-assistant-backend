@@ -23,7 +23,7 @@ public class CodeSubmission {
 
     private String language;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "LONGTEXT")
     private String aiFeedback;
 
     private LocalDateTime submittedAt;
