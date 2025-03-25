@@ -24,21 +24,34 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	// Spring Boot Starters
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.projectlombok:lombok'
-	implementation("org.springframework.boot:spring-boot-starter-webflux")
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-security' // Spring Security for authentication
+	implementation 'org.springframework.boot:spring-boot-starter-validation' // Validation API for request validation
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
-	//JUnit 4 dependencies (Testing)
+	// JWT Authentication
+	implementation 'com.auth0:java-jwt:4.2.1' // Auth0 JWT library for token generation
+
+	// Lombok for reducing boilerplate code
+	implementation 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	// MySQL Database Connector
+	implementation 'com.mysql:mysql-connector-j'
+
+	// Password Encryption (BCrypt)
+	implementation 'org.springframework.security:spring-security-crypto' // Password hashing
+
+	// Testing Dependencies
 	testImplementation 'junit:junit:4.13.1'
 	testImplementation 'org.mockito:mockito-core:4.3.1'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-
+	// Developer Tools
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	implementation 'com.mysql:mysql-connector-j'
-	annotationProcessor 'org.projectlombok:lombok'
 }
 
 tasks.named('test') {

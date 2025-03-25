@@ -22,7 +22,7 @@ public class AiCodeReviewService {
     private final CodeSubmissionRepository repository;
     private final WebClient webClient;
 
-    @Value("${openai.api.key}")  // Inject the API key here
+    @Value("${openai.api.key}")  // Injecting the API key here
     private String openAiApiKey;
 
     public AiCodeReviewService(CodeSubmissionRepository repository, WebClient.Builder webClientBuilder) {
