@@ -18,9 +18,15 @@ public class AuthService {
         this.jwtUtil = jwtUtil;
     }
 
+    /** Checking if a user already exists */
+    public boolean userExists(String email) {
+        return userRepository.findByEmail(email).isPresent();
+    }
+
+    /** Registering a new user (with check to prevent duplicate registration) */
     public String registerUser(String username, String email, String password) {
-        if (userRepository.findByEmail(email).isPresent()) {
-            throw new RuntimeException("Email already exists.");
+        if (userExists(email)) {
+            return "User already exists"; // Avoid throwing exception
         }
         String hashedPassword = passwordEncoder.encode(password);
         User user = new User(null, username, email, hashedPassword);
@@ -28,11 +34,19 @@ public class AuthService {
         return "User registered successfully";
     }
 
+    /** Login (existing user) */
     public String loginUser(String email, String password) {
         Optional<User> userOptional = userRepository.findByEmail(email);
-        if (userOptional.isEmpty() || !passwordEncoder.matches(password, userOptional.get().getPassword())) {
-            throw new RuntimeException("Invalid credentials");
+
+        if (userOptional.isEmpty()) {
+            return null; // User not found
         }
-        return jwtUtil.generateToken(email);
+
+        User user = userOptional.get();
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            return null; // Invalid password
+        }
+
+        return jwtUtil.generateToken(email); // Return JWT token
     }
 }
