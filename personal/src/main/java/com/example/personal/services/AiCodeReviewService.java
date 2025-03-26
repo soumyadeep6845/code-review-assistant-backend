@@ -65,8 +65,7 @@ public class AiCodeReviewService {
                 String extractedContent = contentNode.asText();
                 System.out.println(extractedContent);
 
-                // Truncate response if it exceeds 65,000 characters
-                return extractedContent.length() > 10 ? extractedContent.substring(0, 10) : extractedContent;
+                return extractedContent;
 
             } else {
                 return "Error: No valid content found in AI response.";
