@@ -1,25 +1,52 @@
 package com.example.personal.controllers;
 
 import com.example.personal.models.CodeSubmission;
+import com.example.personal.models.User;
 import com.example.personal.models.dto.CodeSubmissionRequest;
+import com.example.personal.repositories.UserRepository;
+import com.example.personal.security.JwtUtil;
 import com.example.personal.services.AiCodeReviewService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/code-review")
 public class CodeReviewController {
 
     private final AiCodeReviewService service;
+    private final JwtUtil jwtUtil; // Inject JwtUtil
+    private final UserRepository userRepository;
 
-    public CodeReviewController(AiCodeReviewService service) {
+    @Autowired
+    public CodeReviewController(AiCodeReviewService service, JwtUtil jwtUtil, UserRepository userRepository) {
         this.service = service;
+        this.jwtUtil = jwtUtil;
+        this.userRepository = userRepository;
     }
 
     @PostMapping("/submit")
-    public CodeSubmission submitCode(@RequestBody CodeSubmissionRequest request) {
-        return service.submitCode(request.getUserId(), request.getCode(), request.getLanguage());
+    public ResponseEntity<?> submitCode(@RequestHeader("Authorization") String token, @RequestBody CodeSubmissionRequest request) {
+        String jwt = token.replace("Bearer ", ""); // Remove Bearer prefix
+        String email = jwtUtil.validateToken(jwt); // Get email from token
+
+        if (email == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid token"));
+        }
+
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        if (userOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "User not found"));
+        }
+
+        User user = userOptional.get();
+
+        CodeSubmission submission = service.submitCode(user.getId().toString(), request.getCode(), request.getLanguage());
+        return ResponseEntity.ok(submission);
     }
+
 }
