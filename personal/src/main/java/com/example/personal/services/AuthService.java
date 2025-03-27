@@ -5,6 +5,8 @@ import com.example.personal.repositories.UserRepository;
 import com.example.personal.security.JwtUtil;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -24,18 +26,26 @@ public class AuthService {
     }
 
     /** Registering a new user (with check to prevent duplicate registration) */
-    public String registerUser(String username, String email, String password) {
+    public Map<String, String> registerUser(String username, String email, String password) {
         if (userExists(email)) {
-            return "User already exists"; // Avoid throwing exception
+            return Map.of("error", "User already exists. Please login.");
         }
+
         String hashedPassword = passwordEncoder.encode(password);
         User user = new User(null, username, email, hashedPassword);
         userRepository.save(user);
-        return "User registered successfully";
+
+        String token = jwtUtil.generateToken(email);
+
+        return Map.of(
+                "userId", String.valueOf(user.getId()),
+                "token", token
+        );
     }
 
+
     /** Login (existing user) */
-    public String loginUser(String email, String password) {
+    public Map<String, String> loginUser(String email, String password) {
         Optional<User> userOptional = userRepository.findByEmail(email);
 
         if (userOptional.isEmpty()) {
@@ -47,6 +57,12 @@ public class AuthService {
             return null; // Invalid password
         }
 
-        return jwtUtil.generateToken(email); // Return JWT token
+        String token = jwtUtil.generateToken(email);
+
+        // Return userId and token as a Map
+        return Map.of(
+                "userId", String.valueOf(user.getId()),
+                "token", token
+        );
     }
 }

@@ -25,13 +25,18 @@ public class AuthController {
         }
 
         if (authService.userExists(request.getEmail())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", "User already exists"));
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", "User already exists. Please login."));
         }
 
-        String response = authService.registerUser(request.getUsername(), request.getEmail(), request.getPassword());
+        Map<String, String> registerResponse = authService.registerUser(request.getUsername(), request.getEmail(), request.getPassword());
 
-        return ResponseEntity.ok(Map.of("message", response, "token", "sample-token")); // Send JSON response
+        return ResponseEntity.ok(Map.of(
+                "message", "User registered successfully",
+                "userId", registerResponse.get("userId"),
+                "token", registerResponse.get("token")
+        ));
     }
+
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthRequest request) {
@@ -43,12 +48,17 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "User not found. Please register."));
         }
 
-        String token = authService.loginUser(request.getEmail(), request.getPassword());
-        if (token == null) {
+        Map<String, String> loginResponse = authService.loginUser(request.getEmail(), request.getPassword());
+        if (loginResponse == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid credentials"));
         }
 
-        return ResponseEntity.ok(Map.of("message", "Login successful", "token", token));
+        return ResponseEntity.ok(Map.of(
+                "message", "Login successful",
+                "userId", loginResponse.get("userId"),
+                "token", loginResponse.get("token")
+        ));
     }
+
 
 }
