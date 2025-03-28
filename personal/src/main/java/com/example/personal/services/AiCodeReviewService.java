@@ -22,7 +22,7 @@ public class AiCodeReviewService {
     private final CodeSubmissionRepository repository;
     private final WebClient webClient;
 
-    @Value("${openai.api.key}")  // Injecting the API key here
+    @Value("${openai.api.key}")  // Injecting API key here
     private String openAiApiKey;
 
     public AiCodeReviewService(CodeSubmissionRepository repository, WebClient.Builder webClientBuilder) {
@@ -47,13 +47,12 @@ public class AiCodeReviewService {
         try {
             String aiResponse = webClient.post()
                     .uri("/chat/completions")
-                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + openAiApiKey)  // API key applied here
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + openAiApiKey)
                     .bodyValue(requestBody)
                     .retrieve()
                     .bodyToMono(String.class)
                     .block();
 
-            // Parse JSON to extract the content field
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode rootNode = objectMapper.readTree(aiResponse);
             JsonNode choicesNode = rootNode.path("choices");

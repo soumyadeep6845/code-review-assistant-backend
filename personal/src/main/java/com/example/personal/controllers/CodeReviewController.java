@@ -22,6 +22,7 @@ public class CodeReviewController {
     private final JwtUtil jwtUtil; // Inject JwtUtil
     private final UserRepository userRepository;
 
+
     @Autowired
     public CodeReviewController(AiCodeReviewService service, JwtUtil jwtUtil, UserRepository userRepository) {
         this.service = service;
@@ -31,8 +32,12 @@ public class CodeReviewController {
 
     @PostMapping("/submit")
     public ResponseEntity<?> submitCode(@RequestHeader("Authorization") String token, @RequestBody CodeSubmissionRequest request) {
-        String jwt = token.replace("Bearer ", ""); // Remove Bearer prefix
-        String email = jwtUtil.validateToken(jwt); // Get email from token
+        if (token == null || !token.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", "Missing or invalid token"));
+        }
+
+        String jwt = token.replace("Bearer ", "");
+        String email = jwtUtil.validateToken(jwt);
 
         if (email == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid token"));
@@ -44,7 +49,6 @@ public class CodeReviewController {
         }
 
         User user = userOptional.get();
-
         CodeSubmission submission = service.submitCode(user.getId().toString(), request.getCode(), request.getLanguage());
         return ResponseEntity.ok(submission);
     }

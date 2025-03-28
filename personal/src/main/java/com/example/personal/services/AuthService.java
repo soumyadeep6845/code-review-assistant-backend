@@ -59,7 +59,6 @@ public class AuthService {
 
         String token = jwtUtil.generateToken(email);
 
-        // Return userId and token as a Map
         return Map.of(
                 "userId", String.valueOf(user.getId()),
                 "token", token
