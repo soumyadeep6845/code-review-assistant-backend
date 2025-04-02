@@ -5,7 +5,13 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - db
+      db:
+        condition: service_healthy  # Wait until MySQL is ready
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/code_review_db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+
   db:
     image: mysql:8.0
     container_name: mysql-container
@@ -14,9 +20,14 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: code_review_db
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      retries: 5
+      start_period: 20s
 
 volumes:
   mysql_data:
