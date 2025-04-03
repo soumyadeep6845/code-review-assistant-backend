@@ -6,13 +6,16 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Map;
 
@@ -21,6 +24,9 @@ public class AiCodeReviewService {
 
     private final CodeSubmissionRepository repository;
     private final WebClient webClient;
+
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
     @Value("${openai.api.key}")  // Injecting API key here
     private String openAiApiKey;
@@ -34,12 +40,24 @@ public class AiCodeReviewService {
     }
 
     public String analyzeCode(String code, String language) {
+
+        // Generate a unique cache key based on the code and language
+        String cacheKey = "code_review:" + language + ":" + code.hashCode();
+
+        // Check if the response exists in Redis cache
+        String cachedReview = redisTemplate.opsForValue().get(cacheKey);
+        if (cachedReview != null) {
+            System.out.println("Returning cached response for key: " + cacheKey);
+            return cachedReview;
+        }
+
         // Creating a JSON request body
         Map<String, Object> requestBody = Map.of(
                 "model", "gpt-4o-mini",
                 "messages", new Object[]{
                         Map.of("role", "system", "content", "You are an expert code reviewer. Provide a detailed review."),
-                        Map.of("role", "user", "content", "Analyze the following " + language + " code and suggest improvements. Only provide the necessary improvements in short, don't explain anything. Answer directly on point:\n\n" + code)
+                        Map.of("role", "user", "content", "Analyze the following " + language +
+                                " code and suggest improvements. Only provide the necessary improvements in short, don't explain anything. Answer directly in pointwise manner. Also, no need to provide the updated code again. Just the pointwise suggestions:\n\n" + code)
                 },
                 "max_tokens", 500
         );
@@ -62,17 +80,17 @@ public class AiCodeReviewService {
                 JsonNode contentNode = messageNode.path("content");
 
                 String extractedContent = contentNode.asText();
-                System.out.println(extractedContent);
+                System.out.println("Caching response for key: " + cacheKey);
+
+                // Store the AI response in Redis with a 1-hour expiration
+                redisTemplate.opsForValue().set(cacheKey, extractedContent, Duration.ofHours(1));
 
                 return extractedContent;
-
             } else {
                 return "Error: No valid content found in AI response.";
             }
         } catch (WebClientResponseException e) {
             return "Error: " + e.getStatusCode() + " - " + e.getResponseBodyAsString();
-        } catch (JsonMappingException e) {
-            throw new RuntimeException(e);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
