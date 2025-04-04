@@ -41,10 +41,10 @@ public class AiCodeReviewService {
 
     public String analyzeCode(String code, String language) {
 
-        // Generate a unique cache key based on the code and language
+        // Generating a unique cache key based on the code and language
         String cacheKey = "code_review:" + language + ":" + code.hashCode();
 
-        // Check if the response exists in Redis cache
+        // Checking if the response exists in Redis cache
         String cachedReview = redisTemplate.opsForValue().get(cacheKey);
         if (cachedReview != null) {
             System.out.println("Returning cached response for key: " + cacheKey);
