@@ -7,10 +7,14 @@ services:
     depends_on:
       db:
         condition: service_healthy  # Wait until MySQL is ready
+      redis:
+        condition: service_started
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/code_review_db
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
+      SPRING_REDIS_HOST: redis
+      SPRING_REDIS_PORT: 6379
 
   db:
     image: mysql:8.0
@@ -28,6 +32,13 @@ services:
       interval: 10s
       retries: 5
       start_period: 20s
+
+  redis:
+    image: redis:7
+    container_name: redis-container
+    restart: always
+    ports:
+      - "6379:6379"
 
 volumes:
   mysql_data:
