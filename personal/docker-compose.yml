@@ -4,9 +4,11 @@ services:
     build: .
     ports:
       - "8080:8080"
+    volumes:
+      - ./secrets.properties:/app/secrets.properties
     depends_on:
       db:
-        condition: service_healthy  # Wait until MySQL is ready
+        condition: service_healthy
       redis:
         condition: service_started
     environment:
@@ -24,7 +26,7 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: code_review_db
     ports:
-      - "3307:3306"
+      - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
