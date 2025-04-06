@@ -85,22 +85,24 @@ The backend will now be running on **http://localhost:8080**.
 
 ```
 code-review-assistant-backend/
-│-- src/
-│   ├── main/
-│   │   ├── java/com/example/personal/
-│   │   │   ├── config/         # Configurations
-│   │   │   ├── controllers/    # API Controllers
-│   │   │   ├── models/         # Data Models
-│   │   │   ├── repositories/   # Database Repositories
-│   │   │   ├── security/       # Security Configuration
-│   │   │   ├── services/       # Business Logic Services
-│   │   ├── resources/
-│   │       ├── application.properties  # Application Configuration
-│   ├── test/           # Unit & Integration Tests
-│-- build.gradle        # Gradle Build Configuration
-│-- Dockerfile          # Docker Configuration
-│-- docker-compose.yml  # Docker Compose Configuration
-│-- secrets.properties  # Key Secrets (to be created separately)
+│-- personal/
+│   │-- src/
+│   │   ├── main/
+│   │   │   ├── java/com/example/personal/
+│   │   │   │   ├── config/         # Configurations
+│   │   │   │   ├── controllers/    # API Controllers
+│   │   │   │   ├── models/         # Data Models
+│   │   │   │   ├── repositories/   # Database Repositories
+│   │   │   │   ├── security/       # Security Configuration
+│   │   │   │   ├── services/       # Business Logic Services
+│   │   │   ├── resources/
+│   │   │       ├── application.properties  # Application Configuration
+│   │   ├── test/           # Unit & Integration Tests
+│   │-- build.gradle        # Gradle Build Configuration
+│   │-- Dockerfile          # Docker Configuration
+│   │-- docker-compose.yml  # Docker Compose Configuration
+│   │-- secrets.properties  # Key Secrets (to be created separately)
+│-- README.md
 ```
 
 ---
