@@ -9,7 +9,10 @@ This is the **backend** of the Code Review Assistant, a powerful AI-driven syste
 ![Auth](./assets/auth.png)
 
 ### 🔹 Home Screen
-![Home](./assets/home.png)
+![Home](./assets/homescreen.png)
+
+### 🔹 About Screen
+![About](./assets/about.png)
 
 ### 🔹 Code Review in Action
 ![Review](./assets/codereview.png)
@@ -21,7 +24,7 @@ This is the **backend** of the Code Review Assistant, a powerful AI-driven syste
 ### 🔹 Local Cache (Redis)
 ![Redis](./assets/redislocalcache.png)
 
-### 🔹 Containerization (Docker)
+### 🔹 Containerization (Docker) - Backend
 ![Docker](./assets/dockerbackend.png)
 
 ## 🛠 Tech Stack
