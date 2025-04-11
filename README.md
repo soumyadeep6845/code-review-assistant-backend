@@ -44,7 +44,7 @@ This is the **backend** of the Code Review Assistant, a powerful AI-driven syste
 
 ### Prerequisites
 - Java 17
-- MySQL (or Docker)
+- MySQL
 - Redis
 - Gradle
 - Docker
