@@ -8,15 +8,18 @@ This is the **backend** of the Code Review Assistant, a powerful AI-driven syste
 ### 🔹 Authentication Page
 ![Auth](./assets/auth.png)
 
-### 🔹 Home Screen
+### 🔹 Home Page
 ![Home](./assets/homescreen.png)
 
-### 🔹 About Screen
+### 🔹 About Page
 ![About](./assets/about.png)
 
 ### 🔹 Code Review in Action
 ![Review](./assets/codereview.png)
 ![Feedback](./assets/codefeedback.png)
+
+### 🔹 Contact Page
+![Contact](./assets/contactscreen.png)
 
 ### 🔹 MySQL Database (SQLYog)
 ![Database](./assets/database.png)
@@ -31,10 +34,14 @@ This is the **backend** of the Code Review Assistant, a powerful AI-driven syste
 - **Language:** Java (v17)
 - **Framework:** Spring Boot
 - **Database:** MySQL
+- **API Communication:** REST (Spring MVC)
 - **Build Tool:** Gradle
-- **Cache:** Redis
+- **Security:** Spring Security
+- **Authentication:** JWT (custom, with encryption)
+- **Logging:** SLF4j
+- **Cache Layer:** Redis
+- **Unit Test:** JUnit, Mockito
 - **Containerization:** Docker
-- **Orchestration (Future Plan):** Kubernetes (Planned for future scalability)
 
 > ℹ️ *Kubernetes is not currently being used, but might be adopted as the project scales to handle deployment and orchestration needs.*
 
