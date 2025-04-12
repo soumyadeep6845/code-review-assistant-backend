@@ -43,8 +43,6 @@ This is the **backend** of the Code Review Assistant, a powerful AI-driven syste
 - **Unit Test:** JUnit, Mockito
 - **Containerization:** Docker
 
-> ℹ️ *Kubernetes is not currently being used, but might be adopted as the project scales to handle deployment and orchestration needs.*
-
 ---
 
 ## 📦 Installation & Setup
