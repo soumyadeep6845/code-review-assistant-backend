@@ -1,4 +1,8 @@
-# AI Code Review Assistant
+<h1 align="center">AI Code Review Assistant</h1>
+<p align="center">
+   <img src="assets/maingif.gif" alt="Logo" width="500" height="500"/>
+</p>
+<!-- PROJECT LOGO -->
 
 ## 🚀 Overview
 This is the **backend** of the Code Review Assistant, a powerful AI-driven system designed to analyze code snippets and provide intelligent feedback. The backend handles API requests, communicates with OpenAI's GPT models, caches responses using Redis, and stores submission data securely.
