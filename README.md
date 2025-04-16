@@ -32,6 +32,9 @@ This is the **backend** of the Code Review Assistant, a powerful AI-driven syste
 ![Review](./assets/codereview.png)
 ![Feedback](./assets/codefeedback.png)
 
+### 🔹 API Documentation (Swagger)
+![Swagger](./assets/swaggerscreen.png)
+
 ### 🔹 Contact Page
 ![Contact](./assets/contactscreen.png)
 
