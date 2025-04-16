@@ -3,6 +3,20 @@
 ## 🚀 Overview
 This is the **backend** of the Code Review Assistant, a powerful AI-driven system designed to analyze code snippets and provide intelligent feedback. The backend handles API requests, communicates with OpenAI's GPT models, caches responses using Redis, and stores submission data securely.
 
+## 🛠 Tech Stack
+- **Language:** Java (v17)
+- **Framework:** Spring Boot
+- **Database:** MySQL
+- **API Communication:** REST (Spring MVC)
+- **API Documentation:** Swagger (v3)
+- **Build Tool:** Gradle
+- **Security:** Spring Security
+- **Authentication:** JWT (custom, with encryption)
+- **Logging:** SLF4j
+- **Cache Layer:** Redis
+- **Unit Test:** JUnit, Mockito
+- **Containerization:** Docker
+
 ## 📸 Application Screenshots
 
 ### 🔹 Authentication Page
@@ -29,19 +43,6 @@ This is the **backend** of the Code Review Assistant, a powerful AI-driven syste
 
 ### 🔹 Containerization (Docker) - Backend
 ![Docker](./assets/dockerbackend.png)
-
-## 🛠 Tech Stack
-- **Language:** Java (v17)
-- **Framework:** Spring Boot
-- **Database:** MySQL
-- **API Communication:** REST (Spring MVC)
-- **Build Tool:** Gradle
-- **Security:** Spring Security
-- **Authentication:** JWT (custom, with encryption)
-- **Logging:** SLF4j
-- **Cache Layer:** Redis
-- **Unit Test:** JUnit, Mockito
-- **Containerization:** Docker
 
 ---
 
