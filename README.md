@@ -1,6 +1,6 @@
 <h1 align="center">AI Code Review Assistant</h1>
 <p align="center">
-   <img src="assets/maingif.gif" alt="Logo" width="450" height="450"/>
+   <img src="assets/maingif.gif" alt="Logo" width="400" height="400"/>
 </p>
 <!-- PROJECT LOGO -->
 
