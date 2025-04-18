@@ -2,6 +2,7 @@ package com.example.personal.services;
 
 import com.example.personal.models.CodeSubmission;
 import com.example.personal.repositories.CodeSubmissionRepository;
+import com.example.personal.util.CodeNormalizer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -41,8 +42,11 @@ public class AiCodeReviewService {
 
     public String analyzeCode(String code, String language) {
 
+        // Normalize the code
+        String normalizedCode = CodeNormalizer.normalize(code);
+
         // Generating a unique cache key based on the code and language
-        String cacheKey = "code_review:" + language + ":" + code.hashCode();
+        String cacheKey = "code_review:" + language + ":" + normalizedCode.hashCode();
 
         // Checking if the response exists in Redis cache
         String cachedReview = redisTemplate.opsForValue().get(cacheKey);
