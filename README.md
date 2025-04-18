@@ -132,7 +132,7 @@ code-review-assistant-backend/
 │   │   │   │   ├── repositories/   # Database Repositories
 │   │   │   │   ├── security/       # Security Configuration
 │   │   │   │   ├── services/       # Business Logic Services
-│   │   │   │   ├── util/           # Application utilities
+│   │   │   │   ├── util/           # Helpers & Utilities
 │   │   │   ├── resources/
 │   │   │       ├── application.properties  # Application Configuration
 │   │   ├── test/           # Unit & Integration Tests
