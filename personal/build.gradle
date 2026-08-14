@@ -35,6 +35,9 @@ dependencies {
 	// JWT Authentication
 	implementation 'com.auth0:java-jwt:4.2.1' // Auth0 JWT library for token generation
 
+	//Kafka
+	implementation 'org.springframework.kafka:spring-kafka'
+
 	// Lombok for reducing boilerplate code
 	implementation 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
