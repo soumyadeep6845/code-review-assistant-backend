@@ -23,7 +23,6 @@ import java.util.Map;
 @Service
 public class AiCodeReviewService {
 
-    private final CodeSubmissionRepository repository;
     private final WebClient webClient;
 
     @Autowired
@@ -32,8 +31,7 @@ public class AiCodeReviewService {
     @Value("${openai.api.key}")  // Injecting API key here
     private String openAiApiKey;
 
-    public AiCodeReviewService(CodeSubmissionRepository repository, WebClient.Builder webClientBuilder) {
-        this.repository = repository;
+    public AiCodeReviewService(WebClient.Builder webClientBuilder) {
         this.webClient = webClientBuilder
                 .baseUrl("https://api.openai.com/v1")
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
@@ -42,6 +40,9 @@ public class AiCodeReviewService {
 
     public String analyzeCode(String code, String language) {
 
+        System.out.println("=== analyzeCode() STARTED ===");
+        System.out.println("Language: " + language);
+
         // Normalize the code
         String normalizedCode = CodeNormalizer.normalize(code);
 
@@ -49,7 +50,9 @@ public class AiCodeReviewService {
         String cacheKey = "code_review:" + language + ":" + normalizedCode.hashCode();
 
         // Checking if the response exists in Redis cache
+        System.out.println("Checking Redis cache...");
         String cachedReview = redisTemplate.opsForValue().get(cacheKey);
+        System.out.println("Redis cache check completed.");
         if (cachedReview != null) {
             System.out.println("Returning cached response for key: " + cacheKey);
             return cachedReview;
@@ -67,6 +70,7 @@ public class AiCodeReviewService {
         );
 
         try {
+            System.out.println("Calling OpenAI API...");
             String aiResponse = webClient.post()
                     .uri("/chat/completions")
                     .header(HttpHeaders.AUTHORIZATION, "Bearer " + openAiApiKey)
@@ -74,6 +78,8 @@ public class AiCodeReviewService {
                     .retrieve()
                     .bodyToMono(String.class)
                     .block();
+
+            System.out.println("OpenAI API response received.");
 
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode rootNode = objectMapper.readTree(aiResponse);
@@ -94,23 +100,25 @@ public class AiCodeReviewService {
                 return "Error: No valid content found in AI response.";
             }
         } catch (WebClientResponseException e) {
-            return "Error: " + e.getStatusCode() + " - " + e.getResponseBodyAsString();
+            System.out.println("=== OPENAI API ERROR ===");
+            System.out.println("Status: " + e.getStatusCode());
+            System.out.println("Response: " + e.getResponseBodyAsString());
+
+            throw new RuntimeException(
+                    "OpenAI API request failed: "
+                            + e.getStatusCode()
+                            + " - "
+                            + e.getResponseBodyAsString(),
+                    e
+            );
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
+        } catch (Exception e) {
+
+            System.out.println("=== UNEXPECTED AI REVIEW ERROR ===");
+            e.printStackTrace();
+
+            throw e;
         }
-    }
-
-    public CodeSubmission submitCode(String userId, String code, String language) {
-        String aiFeedback = analyzeCode(code, language);
-
-        CodeSubmission submission = CodeSubmission.builder()
-                .userId(userId)
-                .code(code)
-                .language(language)
-                .aiFeedback(aiFeedback)
-                .submittedAt(LocalDateTime.now())
-                .build();
-
-        return repository.save(submission);
     }
 }

@@ -2,6 +2,7 @@ package com.example.personal.kafka;
 
 public class CodeReviewEvent {
 
+    private Long submissionId;
     private String userId;
     private String code;
     private String language;
@@ -9,10 +10,19 @@ public class CodeReviewEvent {
     public CodeReviewEvent() {
     }
 
-    public CodeReviewEvent(String userId, String code, String language) {
+    public CodeReviewEvent(Long submissionId, String userId, String code, String language) {
+        this.submissionId = submissionId;
         this.userId = userId;
         this.code = code;
         this.language = language;
+    }
+
+    public Long getSubmissionId() {
+        return submissionId;
+    }
+
+    public void setSubmissionId(Long submissionId) {
+        this.submissionId = submissionId;
     }
 
     public String getUserId() {
@@ -42,7 +52,8 @@ public class CodeReviewEvent {
     @Override
     public String toString() {
         return "CodeReviewEvent{" +
-                "userId='" + userId + '\'' +
+                "submissionId=" + submissionId +
+                ", userId='" + userId + '\'' +
                 ", code='" + code + '\'' +
                 ", language='" + language + '\'' +
                 '}';
