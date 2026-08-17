@@ -27,4 +27,6 @@ public class CodeSubmission {
     private String aiFeedback;
 
     private LocalDateTime submittedAt;
+
+    private String status;
 }
