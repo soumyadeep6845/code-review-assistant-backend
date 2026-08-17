@@ -59,6 +59,7 @@ public class AuthController {
         return ResponseEntity.ok(Map.of(
                 "message", "User registered successfully",
                 "userId", registerResponse.get("userId"),
+                "username", registerResponse.get("username"),
                 "token", registerResponse.get("token")
         ));
     }
@@ -82,6 +83,7 @@ public class AuthController {
         return ResponseEntity.ok(Map.of(
                 "message", "Login successful",
                 "userId", loginResponse.get("userId"),
+                "username", loginResponse.get("username"),
                 "token", loginResponse.get("token")
         ));
     }

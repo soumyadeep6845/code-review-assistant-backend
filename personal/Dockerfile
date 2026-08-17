@@ -1,16 +1,16 @@
-FROM openjdk:17-jdk-slim
+FROM gradle:8.12.1-jdk17-noble
+
 WORKDIR /app
 
-# Copy the Gradle wrapper and build scripts
-COPY gradlew settings.gradle build.gradle ./
+# Copy the Gradle build files
+COPY settings.gradle build.gradle ./
 COPY gradle gradle/
 
 # Copy source code and resources
 COPY src src/
-COPY src/main/resources src/main/resources/
 
 # Build the JAR inside the container
-RUN chmod +x gradlew && ./gradlew build -x test
+RUN gradle build -x test
 
 # Copy the generated JAR
 COPY build/libs/personal-0.0.1-SNAPSHOT.jar app.jar

@@ -39,6 +39,7 @@ public class AuthService {
 
         return Map.of(
                 "userId", String.valueOf(user.getId()),
+                "username", user.getUsername(),
                 "token", token
         );
     }
@@ -61,6 +62,7 @@ public class AuthService {
 
         return Map.of(
                 "userId", String.valueOf(user.getId()),
+                "username", user.getUsername(),
                 "token", token
         );
     }
