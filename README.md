@@ -6,6 +6,7 @@
 
 ## 🚀 Overview
 This is the **backend** of the Code Review Assistant, a powerful AI-driven system designed to analyze code snippets and provide intelligent feedback. The backend handles API requests, communicates with OpenAI's GPT models, caches responses using Redis, and stores submission data securely.
+Here's a link to the frontend of the application: https://github.com/soumyadeep6845/code-review-assistant-frontend
 
 ## 🛠 Tech Stack
 - **Language:** Java (v17)
